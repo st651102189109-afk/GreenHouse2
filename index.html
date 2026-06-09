@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farm Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <nav class="bg-emerald-600 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-items-center">
+            <h1 class="text-xl font-bold flex items-center gap-2">
+                <i class="fa-solid fa-leaf"></i> โรงเรือนปลูกผักสมาร์ทฟาร์ม
+            </h1>
+            <span class="bg-emerald-700 text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Live System
+            </span>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm font-medium">อุณหภูมิอากาศ</p>
+                    <h3 id="txt-temp" class="text-4xl font-bold text-gray-800 mt-1">-- <span class="text-2xl font-normal">°C</span></h3>
+                </div>
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-temperature-half"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm font-medium">ความชื้นอากาศ</p>
+                    <h3 id="txt-hum" class="text-4xl font-bold text-gray-800 mt-1">-- <span class="text-2xl font-normal">%</span></h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-droplet"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between gap-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">ความชื้นดิน - แปลงที่ 1</p>
+                        <h3 id="txt-soil1" class="text-4xl font-bold text-emerald-600 mt-1">-- <span class="text-2xl font-normal">%</span></h3>
+                    </div>
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 border-t pt-3 border-gray-50">
+                    <span class="text-xs text-gray-400">สถานะวาล์วแปลง 1:</span>
+                    <span id="badge-valve1" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600">กำลังโหลด...</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between gap-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">ความชื้นดิน - แปลงที่ 2</p>
+                        <h3 id="txt-soil2" class="text-4xl font-bold text-emerald-600 mt-1">-- <span class="text-2xl font-normal">%</span></h3>
+                    </div>
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 border-t pt-3 border-gray-50">
+                    <span class="text-xs text-gray-400">สถานะวาล์วแปลง 2:</span>
+                    <span id="badge-valve2" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600">กำลังโหลด...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+            <div>
+                <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-emerald-600"></i> แผงควบคุมระบบน้ำ
+                </h2>
+                <hr class="border-gray-100 mb-6">
+
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl mb-6">
+                    <div>
+                        <p class="font-semibold text-gray-700">โหมดการทำงานอัตโนมัติ</p>
+                        <p class="text-xs text-gray-400 mt-0.5">เปิดระบบรดน้ำอัตโนมัติตามความชื้นดิน</p>
+                    </div>
+                    <button id="btn-auto" onclick="toggleAutoMode()" class="px-4 py-2 rounded-xl font-medium shadow-xs transition duration-200 bg-gray-200 text-gray-700">
+                        Loading
+                    </button>
+                </div>
+
+                <div id="manual-controls" class="space-y-4 opacity-50 pointer-events-none transition duration-300">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">ควบคุมด้วยตัวเอง (Manual Mode)</p>
+                    
+                    <div class="flex items-center justify-between p-3 border border-gray-100 rounded-xl">
+                        <span class="text-sm font-medium text-gray-700">เปิดน้ำ แปลงที่ 1</span>
+                        <button id="btn-manual-v1" onclick="toggleValveManual(1)" class="px-4 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-500">
+                            ปิดอยู่
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 border border-gray-100 rounded-xl">
+                        <span class="text-sm font-medium text-gray-700">เปิดน้ำ แปลงที่ 2</span>
+                        <button id="btn-manual-v2" onclick="toggleValveManual(2)" class="px-4 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-500">
+                            ปิดอยู่
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-xs text-center text-gray-400 bg-gray-50 p-3 rounded-xl">
+                <i class="fa-solid fa-circle-info"></i> ระบบ Manual จะทำงานได้เมื่อปิดโหมดอัตโนมัติเท่านั้น
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-4 text-xs text-gray-400 border-t border-gray-200 bg-white">
+        © 2026 Smart Farm IoT Dashboard Hosted on GitHub
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <script>
+        // ================= กรอกข้อมูล Firebase ของคุณที่นี่ =================
+        const firebaseConfig = {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            databaseURL: "YOUR_FIREBASE_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID"
+        };
+        // =============================================================
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // ตัวแปรเก็บสถานะปัจจุบันใน Web App
+        let currentAutoMode = true;
+        let currentManualV1 = false;
+        let currentManualV2 = false;
+
+        // --- 1. ดึงข้อมูลเซ็นเซอร์และสถานะวาล์วจริงแบบ Realtime ---
+        db.ref('SmartFarm/Environment').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                document.getElementById('txt-temp').innerHTML = `${data.Temperature?.toFixed(1) || '--'} <span class="text-2xl font-normal">°C</span>`;
+                document.getElementById('txt-hum').innerHTML = `${data.Humidity?.toFixed(1) || '--'} <span class="text-2xl font-normal">%</span>`;
+            }
+        });
+
+        db.ref('SmartFarm/Zone1/SoilMoisture').on('value', (snapshot) => {
+            document.getElementById('txt-soil1').innerHTML = `${snapshot.val() ?? '--'} <span class="text-2xl font-normal">%</span>`;
+        });
+
+        db.ref('SmartFarm/Zone2/SoilMoisture').on('value', (snapshot) => {
+            document.getElementById('txt-soil2').innerHTML = `${snapshot.val() ?? '--'} <span class="text-2xl font-normal">%</span>`;
+        });
+
+        // ดึงสถานะการเปิด/ปิดจริงของวาล์วที่ส่งมาจาก ESP32
+        db.ref('SmartFarm/Status/Zone1_Valve').on('value', (snapshot) => {
+            const el = document.getElementById('badge-valve1');
+            if(snapshot.val() === true) {
+                el.className = "text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 animate-pulse";
+                el.innerText = "กำลังรดน้ำ 💧";
+            } else {
+                el.className = "text-xs font-semibold px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600";
+                el.innerText = "ปิด";
+            }
+        });
+
+        db.ref('SmartFarm/Status/Zone2_Valve').on('value', (snapshot) => {
+            const el = document.getElementById('badge-valve2');
+            if(snapshot.val() === true) {
+                el.className = "text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 animate-pulse";
+                el.innerText = "กำลังรดน้ำ 💧";
+            } else {
+                el.className = "text-xs font-semibold px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600";
+                el.innerText = "ปิด";
+            }
+        });
+
+        // --- 2. ฟังก์ชันควบคุมระบบ (Auto / Manual) ---
+        
+        // ฟังก์ชันตรวจจับและเปลี่ยนหน้าตาโหมด Auto
+        db.ref('SmartFarm/Control/AutoMode').on('value', (snapshot) => {
+            currentAutoMode = snapshot.val() ?? true;
+            const btn = document.getElementById('btn-auto');
+            const manualArea = document.getElementById('manual-controls');
+
+            if(currentAutoMode) {
+                btn.className = "px-4 py-2 rounded-xl font-medium shadow-xs transition duration-200 bg-emerald-500 text-white";
+                btn.innerText = "เปิด (AUTO)";
+                manualArea.classList.add('opacity-50', 'pointer-events-none'); // ล็อคปุ่ม Manual 
+            } else {
+                btn.className = "px-4 py-2 rounded-xl font-medium shadow-xs transition duration-200 bg-amber-500 text-white";
+                btn.innerText = "ปิด (MANUAL)";
+                manualArea.classList.remove('opacity-50', 'pointer-events-none'); // ปลดล็อคปุ่ม Manual
+            }
+        });
+
+        // ฟังคำสั่ง Manual เพื่อซิงค์สถานะปุ่มกดบนเว็บ
+        db.ref('SmartFarm/Control/Zone1_Manual').on('value', (snapshot) => {
+            currentManualV1 = snapshot.val() ?? false;
+            const btn = document.getElementById('btn-manual-v1');
+            btn.className = currentManualV1 ? "px-4 py-1.5 rounded-lg text-sm font-medium bg-blue-500 text-white" : "px-4 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-500";
+            btn.innerText = currentManualV1 ? "เปิดอยู่ 💧" : "ปิดอยู่";
+        });
+
+        db.ref('SmartFarm/Control/Zone2_Manual').on('value', (snapshot) => {
+            currentManualV2 = snapshot.val() ?? false;
+            const btn = document.getElementById('btn-manual-v2');
+            btn.className = currentManualV2 ? "px-4 py-1.5 rounded-lg text-sm font-medium bg-blue-500 text-white" : "px-4 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-500";
+            btn.innerText = currentManualV2 ? "เปิดอยู่ 💧" : "ปิดอยู่";
+        });
+
+        // ฟังก์ชันเมื่อกดปุ่มสลับโหมด Auto/Manual
+        function toggleAutoMode() {
+            db.ref('SmartFarm/Control/AutoMode').set(!currentAutoMode);
+        }
+
+        // ฟังก์ชันเมื่อกดเปิด-ปิดน้ำเองในโหมด Manual
+        function toggleValveManual(zone) {
+            if(zone === 1) {
+                db.ref('SmartFarm/Control/Zone1_Manual').set(!currentManualV1);
+            } else if(zone === 2) {
+                db.ref('SmartFarm/Control/Zone2_Manual').set(!currentManualV2);
+            }
+        }
+    </script>
+</body>
+</html>
